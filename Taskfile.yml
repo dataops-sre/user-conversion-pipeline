@@ -1,0 +1,23 @@
+# https://taskfile.dev
+
+version: '2'
+
+env:
+  DOCKER_IMAGE: user-registrations-and-app-loaded
+  DOCKER_REGISTRY: '{{default "mrmuggymuggy" .DOCKER_REGISTRY}}'
+  NAMESPACE: '{{default "default" .NAMESPACE}}'
+  VERSION: 0.1.0
+
+tasks:
+
+  jupyter:
+    summary: |
+      Local development with jupyter-notebook, fast feedback MVP
+    cmds:
+      #jupyter with latest spark
+      - docker-compose up --abort-on-container-exit user-registrations-and-app-loaded-jupyter
+
+  default:
+    cmds:
+      - echo 'try task local.run'
+    silent: true
