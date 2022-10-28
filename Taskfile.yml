@@ -10,6 +10,16 @@ env:
 
 tasks:
 
+  lint:
+    cmds:
+      - pylint --exit-zero jobs
+
+  format:
+    cmds:
+      - pip install pre-commit
+      - pre-commit install
+      - pre-commit run --all-files
+
   jupyter:
     summary: |
       Local development with jupyter-notebook, fast feedback MVP
