@@ -1,0 +1,5 @@
+FROM jupyter/pyspark-notebook:spark-3.3.1
+
+COPY requirements-test.txt .
+
+RUN pip install -r requirements-test.txt
