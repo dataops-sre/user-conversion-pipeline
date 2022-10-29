@@ -1,5 +1,5 @@
 """
-ETL python job for split input data into two data output
+ETL pyspark job for spliting input data into two data output
 """
 import sys
 from typing import Tuple
@@ -59,7 +59,6 @@ def transform_data(data: DataFrame) -> Tuple[DataFrame, DataFrame]:
     SPARK ETL --> T as Transform
     Apply event split
 
-    :param spark: spark session
     :param data: input dataframe
     :return: A dataframe tuple contains user_registration and app_loaded data
     """

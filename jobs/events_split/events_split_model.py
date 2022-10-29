@@ -1,5 +1,5 @@
 """
-ETL functions for events split, separate file for easier unittests
+ETL functions for events split, separate from job file for easier unittests
 """
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.functions import col, date_format

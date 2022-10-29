@@ -8,14 +8,27 @@ services:
       OUTPUT_DATA_PATH_PREFIX: /data-output
       SPARK_PROPERTIES: |-
         spark.master=local[2]
-        spark.driver.memory=4g
+        spark.driver.memory=2g
         spark.driver.maxResultSize=1g
     volumes:
         - /tmp:/mnt
         - ${PWD}/data-input:/data-input/
         - ${PWD}/data-output:/data-output/
-        #for local run write to s3, mount aws credentials
-        - "${HOME}/.aws/:/home/jovyan/.aws/"
+
+  next-week-conversion-rate:
+    build: .
+    environment:
+      PYTHON_FILE: /workspace/jobs/next_week_conversion_rate.py
+      APP_NAME: next-week-conversion-rate
+      USER_REGISTRATION_DATA_PATH: /data-output/user_registration
+      APP_LOADED_DATA_PATH: /data-output/app_loaded
+      SPARK_PROPERTIES: |-
+        spark.master=local[2]
+        spark.driver.memory=2g
+        spark.driver.maxResultSize=1g
+    volumes:
+        - /tmp:/mnt
+        - ${PWD}/data-output:/data-output/
 
   unit_tests:
     build:
