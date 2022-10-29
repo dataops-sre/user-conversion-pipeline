@@ -25,8 +25,8 @@ def main():
     spark = SparkSession.builder.appName(APP_NAME).getOrCreate()
     spark.sparkContext.setLogLevel("ERROR")
     logger.info(
-        f"""Starting batch process to parse input events into user_registration and app_loaded events
-        with {INPUT_DATA_PATH} as source
+        f"""Starting batch process to parse input events into user_registration and
+        app_loaded events with {INPUT_DATA_PATH} as source
         and {OUTPUT_DATA_PATH_PREFIX} as output path."""
     )
     input_data = extract_data(spark)

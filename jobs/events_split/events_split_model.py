@@ -2,7 +2,7 @@
 ETL functions for events split, separate from job file for easier unittests
 """
 from pyspark.sql.dataframe import DataFrame
-from pyspark.sql.functions import col, date_format
+import pyspark.sql.functions as F
 
 
 def split_user_registration_df(data: DataFrame) -> DataFrame:
@@ -16,7 +16,9 @@ def split_user_registration_df(data: DataFrame) -> DataFrame:
     user_registration_df = (
         data.select("event", "timestamp", "initiator_id", "channel")
         .where(data.event == "registered")
-        .withColumn("derived_tstamp_day", date_format(col("timestamp"), "yyyy-MM-dd"))
+        .withColumn(
+            "derived_tstamp_day", F.date_format(F.col("timestamp"), "yyyy-MM-dd")
+        )
         .withColumnRenamed("timestamp", "time")
     )
     return user_registration_df
@@ -33,7 +35,9 @@ def split_app_loaded_df(data: DataFrame) -> DataFrame:
     app_loaded_df = (
         data.select("event", "timestamp", "initiator_id", "device_type")
         .where(data.event == "app_loaded")
-        .withColumn("derived_tstamp_day", date_format(col("timestamp"), "yyyy-MM-dd"))
+        .withColumn(
+            "derived_tstamp_day", F.date_format(F.col("timestamp"), "yyyy-MM-dd")
+        )
         .withColumnRenamed("timestamp", "time")
     )
 
