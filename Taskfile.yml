@@ -25,19 +25,19 @@ tasks:
       Local development with jupyter-notebook, fast feedback MVP
     cmds:
       #jupyter with latest spark
-      - docker-compose up --abort-on-container-exit user-registrations-and-app-loaded-jupyter
+      - docker-compose up --abort-on-container-exit --no-log-prefix jupyter
 
   events-split:
     summary: |
       Run the app locally with docker-compose
     cmds:
-      - docker-compose up --abort-on-container-exit --build events-split
+      - docker-compose up --abort-on-container-exit --build --no-log-prefix events-split
 
   unit-tests:
     summary: |
       Run the unit-tests locally with docker-compose
     cmds:
-      - docker-compose up --abort-on-container-exit --build unit_tests
+      - docker-compose up --abort-on-container-exit --build --no-log-prefix unit_tests
 
 
   default:

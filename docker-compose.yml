@@ -25,7 +25,7 @@ services:
         - .:/mnt
     entrypoint:  ["pytest", "/mnt/jobs/tests/"]
 
-  user-registrations-and-app-loaded-jupyter:
+  jupyter:
     #code scatch pad
     image: jupyter/pyspark-notebook:spark-3.3.1
     working_dir: /home/jovyan/work
