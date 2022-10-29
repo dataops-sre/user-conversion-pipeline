@@ -27,12 +27,17 @@ tasks:
       #jupyter with latest spark
       - docker-compose up --abort-on-container-exit user-registrations-and-app-loaded-jupyter
 
-
   events-split:
     summary: |
       Run the app locally with docker-compose
     cmds:
       - docker-compose up --abort-on-container-exit --build events-split
+
+  unit-tests:
+    summary: |
+      Run the unit-tests locally with docker-compose
+    cmds:
+      - docker-compose up --abort-on-container-exit --build unit_tests
 
 
   default:
