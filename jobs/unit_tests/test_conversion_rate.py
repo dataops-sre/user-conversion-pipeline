@@ -171,10 +171,9 @@ def test_get_conversion_rate_week_after_registration(spark_session):
         },
     ]
 
-    expected_result = 0.5
-
     df_data = spark_session.createDataFrame(data)
 
     result = get_conversion_rate_week_after_registration(df_data)
+    expected_result = 0.5
 
     assert result == expected_result

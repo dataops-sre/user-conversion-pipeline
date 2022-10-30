@@ -10,7 +10,6 @@ services:
         spark.master=local[2]
         spark.driver.memory=2g
     volumes:
-        - /tmp:/mnt
         - ${PWD}/data-input:/data-input/
         - ${PWD}/data-output:/data-output/
 
@@ -25,7 +24,6 @@ services:
         spark.master=local[2]
         spark.driver.memory=2g
     volumes:
-        - /tmp:/mnt
         - ${PWD}/data-output:/data-output/
 
   unit_tests:

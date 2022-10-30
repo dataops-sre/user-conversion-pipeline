@@ -138,7 +138,6 @@ def test_split_app_loaded_df(spark_session):
     df_data = spark_session.createDataFrame(data)
 
     result_df = split_app_loaded_df(df_data).toPandas()
-    print(result_df)
     expected_result_df = spark_session.createDataFrame(expected_result).toPandas()
 
     pd.testing.assert_frame_equal(

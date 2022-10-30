@@ -2,12 +2,6 @@
 
 version: '2'
 
-env:
-  DOCKER_IMAGE: user-registrations-and-app-loaded
-  DOCKER_REGISTRY: '{{default "mrmuggymuggy" .DOCKER_REGISTRY}}'
-  NAMESPACE: '{{default "default" .NAMESPACE}}'
-  VERSION: 0.1.0
-
 tasks:
 
   lint:
@@ -15,6 +9,8 @@ tasks:
       - pylint --exit-zero jobs
 
   format:
+    summary: |
+      Install pre-commit hook to format code, only need to run it once
     cmds:
       - pip install pre-commit
       - pre-commit install
@@ -29,13 +25,13 @@ tasks:
 
   events-split:
     summary: |
-      Run the app locally with docker-compose
+      Run the events split job locally with docker-compose
     cmds:
       - docker-compose up --abort-on-container-exit --build --no-log-prefix events-split
 
   conversion-rate-week-after-registration:
     summary: |
-      Run the app locally with docker-compose
+      Calculate conversion rate one week after registration locally with docker-compose
     cmds:
       - docker-compose up --abort-on-container-exit --build --no-log-prefix conversion-rate-week-after-registration
 
@@ -45,8 +41,7 @@ tasks:
     cmds:
       - docker-compose up --abort-on-container-exit --build --no-log-prefix unit_tests
 
-
   default:
     cmds:
-      - echo 'try task local.run'
+      - echo "try run -> task unit-tests"
     silent: true
