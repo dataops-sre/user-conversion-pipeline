@@ -34,7 +34,7 @@ services:
       dockerfile: Dockerfile.test
     volumes:
         - .:/mnt
-    entrypoint:  ["pytest", "/mnt/jobs/tests/"]
+    entrypoint:  ["pytest", "/mnt/jobs/unit_tests/"]
 
   jupyter:
     #code scatch pad
