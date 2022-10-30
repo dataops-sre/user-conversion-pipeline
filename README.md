@@ -12,9 +12,14 @@ Tech stack
 
 ## Run tasks locally
 
-Make sure you have `docker-compose` and [`task`](https://taskfile.dev/#/) installed
+Make sure you have `docker-compose` and [`task`](https://taskfile.dev/#/) installed:
 
-Application local run and unit tests are in docker, no other dependencies needed
+```
+brew install go-task/tap/go-task
+brew install docker-compose
+```
+
+Application local run and unit tests are in docker, no other dependencies needed, place in root of the project and :
 
 Unit-tests run:
 ```
@@ -36,24 +41,25 @@ task conversion-rate-week-after-registration
 This project uses a standard pyspark structure, ETL jobs python files are located in the root
 of `jobs` folder. For each job, I separate data transformation logics into an independent file,
 pyspark unit tests only test data transformation logics. This project structure allows easy vertical
-extension -- add new transformation logics and test, and horizontal extension -- add new ETL jobs.
+extension -- add new transformation logics and tests, and horizontal extension -- add new ETL jobs.
 
 Make usage of the pre-commit hook to ensure coding standard and quality, automatically format python
 code before git commit.
 
-Use docker and dock-compose for development and testing, it avoids potential gaps between developpers in
+Use docker and dock-compose for local development and testing, it avoids potential gaps between developpers in
 the same project.
 
 Pack the executable in docker container for easier distribution and easier production adoptions.
 
-## My approach and problem encountered.
+## My approach and problems encountered.
 
 I used a jupyter notebook with pyspark support as code scatch pad, it notably helps for data explorations, it enables adhoc verifications and tests.
 
-For the second tasks, I discovered that the user registrations data has duplicates entries. The user conversion rate seems low for me, only 28% of registrations are converted to app_loaded, I made a quick
-data analyse with jupyter, it does not show any relations between registration channel and conversion rate though, I spotted that all directed registrations has no conversion, but due to its very small number -- 2% of registration in the sample, maybe it is just a coincidence.
+For the second tasks, I discovered that the user registrations data has duplicates entries.
 
-the notebook is in `./jupyter-notebook` folder, you can see my explorations by running:
+The user conversion rate seems low, only 28% of registrations are converted to app_loaded, I made a quick data analysis with jupyter, it does not show any relations between registration channel and conversion rate, I spotted that all directed registrations has no conversion, but due to its very small number -- 2% of registration in the sample, maybe it is just a coincidence.
+
+the notebook is in `./jupyter-notebook` folder, you can see my explorations in github or by running:
 ```
 task jupyter
 ```
