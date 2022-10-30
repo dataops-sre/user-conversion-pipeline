@@ -61,13 +61,13 @@ def generate_user_conversion_data(u_df: DataFrame, a_df: DataFrame) -> DataFrame
     return conversion_time_data
 
 
-def get_next_week_conversion_rate(data: DataFrame) -> float:
+def get_conversion_rate_week_after_registration(data: DataFrame) -> float:
     """
-    Get next week conversion rate by dividing number of registed users who load app in
-    the next calendar week to the total number of registed users
+    Get User conversion 1 week after the registration rate by dividing number of
+    registed users who loaded the app in the next calendar week to the total number of registed users
 
     :param data: user conversion time dataframe.
-    :return next week user conversion rate.
+    :return User conversion 1 week after the registration rate.
     """
     res = data.where(F.col("week_diff") == 1).count() / data.count()
 

@@ -1,11 +1,11 @@
 """
-ETL pyspark job to calculate next week user conversion rate
+ETL pyspark job to calculate user conversion rate of one week after registration
 """
 import sys
 from typing import Tuple
 from pyspark.sql import DataFrame, SparkSession
 
-from jobs.conversion_rate.next_week_conversion_rate_config import (
+from jobs.conversion_rate.conversion_rate_week_after_registration_config import (
     APP_NAME,
     USER_REGISTRATION_DATA_PATH,
     APP_LOADED_DATA_PATH,
@@ -14,7 +14,7 @@ from jobs.conversion_rate.next_week_conversion_rate_config import (
 from jobs.conversion_rate.user_conversion_rate_model import (
     dedup_user_registration_data,
     generate_user_conversion_data,
-    get_next_week_conversion_rate,
+    get_conversion_rate_week_after_registration,
 )
 
 
@@ -57,15 +57,15 @@ def transform_data(data: Tuple[DataFrame, DataFrame]) -> float:
     SPARK ETL --> T as Transform
     1) Prepare user registration data, remove duplicated records
     2) Generate user conversion time data
-    3) Calculate next week user conversion rate from user conversion data
+    3) Calculate user conversion rate a week after the registration from conversion data
 
     :param data:  A dataframe tuple contains user_registration and app_loaded data
-    :return: Next week conversion rate, as float
+    :return: User conversion 1 week after registration rate, as float
     """
     u_df, a_df = data
     u_df = dedup_user_registration_data(u_df)
     uc_df = generate_user_conversion_data(u_df, a_df)
-    res = get_next_week_conversion_rate(uc_df)
+    res = get_conversion_rate_week_after_registration(uc_df)
     return res
 
 

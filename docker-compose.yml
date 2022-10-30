@@ -9,23 +9,21 @@ services:
       SPARK_PROPERTIES: |-
         spark.master=local[2]
         spark.driver.memory=2g
-        spark.driver.maxResultSize=1g
     volumes:
         - /tmp:/mnt
         - ${PWD}/data-input:/data-input/
         - ${PWD}/data-output:/data-output/
 
-  next-week-conversion-rate:
+  conversion-rate-week-after-registration:
     build: .
     environment:
-      PYTHON_FILE: /workspace/jobs/next_week_conversion_rate.py
+      PYTHON_FILE: /workspace/jobs/conversion_rate_week_after_registration.py
       APP_NAME: next-week-conversion-rate
       USER_REGISTRATION_DATA_PATH: /data-output/user_registration
       APP_LOADED_DATA_PATH: /data-output/app_loaded
       SPARK_PROPERTIES: |-
         spark.master=local[2]
         spark.driver.memory=2g
-        spark.driver.maxResultSize=1g
     volumes:
         - /tmp:/mnt
         - ${PWD}/data-output:/data-output/

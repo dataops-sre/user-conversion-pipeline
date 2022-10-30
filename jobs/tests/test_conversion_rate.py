@@ -3,7 +3,7 @@ import pandas as pd
 from jobs.conversion_rate.user_conversion_rate_model import (
     dedup_user_registration_data,
     generate_user_conversion_data,
-    get_next_week_conversion_rate,
+    get_conversion_rate_week_after_registration,
 )
 
 
@@ -142,8 +142,8 @@ def test_generate_user_conversion_data(spark_session):
     )
 
 
-def test_get_next_week_conversion_rate(spark_session):
-    """test get_next_week_conversion_rate() function"""
+def test_get_conversion_rate_week_after_registration(spark_session):
+    """test get_conversion_rate_week_after_registration() function"""
     data = [
         {
             "rt": "2020-11-02T14:19:36.000Z",

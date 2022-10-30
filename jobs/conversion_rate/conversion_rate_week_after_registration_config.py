@@ -1,10 +1,10 @@
 """
-Event split spark app configuration
+User conversion rate of one week after registration spark app configuration
 Parse input env vars
 """
 import os, logging
 
-APP_NAME = os.getenv("APP_NAME", "next_week_conversion_rate")
+APP_NAME = os.getenv("APP_NAME", "conversion_rate_week_after_registration")
 
 USER_REGISTRATION_DATA_PATH = os.getenv(
     "USER_REGISTRATION_DATA_PATH", "./data-output/user_registration"

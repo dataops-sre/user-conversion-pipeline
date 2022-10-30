@@ -33,11 +33,11 @@ tasks:
     cmds:
       - docker-compose up --abort-on-container-exit --build --no-log-prefix events-split
 
-  next-week-conversion-rate:
+  conversion-rate-week-after-registration:
     summary: |
       Run the app locally with docker-compose
     cmds:
-      - docker-compose up --abort-on-container-exit --build --no-log-prefix next-week-conversion-rate
+      - docker-compose up --abort-on-container-exit --build --no-log-prefix conversion-rate-week-after-registration
 
   unit-tests:
     summary: |
