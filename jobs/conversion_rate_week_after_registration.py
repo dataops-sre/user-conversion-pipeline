@@ -75,7 +75,7 @@ def load_data(data: float) -> None:
     Print user conversion 1 week after registration rate
     :return: None
     """
-    print(f"Metric: {round(data * 100,2)}%")
+    print(f"Metric: {round(data * 100, 2)}%")
 
 
 # entry point for PySpark ETL application
