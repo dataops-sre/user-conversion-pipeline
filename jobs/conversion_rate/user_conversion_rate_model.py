@@ -1,6 +1,7 @@
 """
 ETL functions for next week conversion rate, separate from job file for easier unittests
 """
+
 from pyspark.sql.dataframe import DataFrame
 import pyspark.sql.functions as F
 

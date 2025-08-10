@@ -1,6 +1,7 @@
 """
 ETL pyspark job for spliting input data into two data output
 """
+
 import sys
 from typing import Tuple
 from pyspark.sql import DataFrame, SparkSession

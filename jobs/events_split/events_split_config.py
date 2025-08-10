@@ -2,6 +2,7 @@
 Event split spark app configuration
 Parse input env vars
 """
+
 import os, logging
 from pyspark.sql.types import (
     LongType,
