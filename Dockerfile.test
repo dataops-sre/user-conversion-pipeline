@@ -1,4 +1,4 @@
-FROM jupyter/pyspark-notebook:spark-3.3.1
+FROM quay.io/jupyter/pyspark-notebook:spark-3.5.2
 
 COPY requirements-test.txt .
 

@@ -1,9 +1,8 @@
 # https://taskfile.dev
 
-version: '2'
+version: "3"
 
 tasks:
-
   lint:
     cmds:
       - pylint --exit-zero jobs
