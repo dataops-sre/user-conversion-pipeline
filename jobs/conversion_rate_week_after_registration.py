@@ -1,6 +1,7 @@
 """
 ETL pyspark job to calculate user conversion rate of one week after registration
 """
+
 import sys
 from typing import Tuple
 from pyspark.sql import DataFrame, SparkSession

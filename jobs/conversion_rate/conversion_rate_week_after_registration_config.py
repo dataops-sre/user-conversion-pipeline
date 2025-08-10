@@ -2,6 +2,7 @@
 User conversion rate of one week after registration spark app configuration
 Parse input env vars
 """
+
 import os, logging
 
 APP_NAME = os.getenv("APP_NAME", "conversion_rate_week_after_registration")

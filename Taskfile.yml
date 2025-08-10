@@ -3,10 +3,6 @@
 version: "3"
 
 tasks:
-  lint:
-    cmds:
-      - pylint --exit-zero jobs
-
   format:
     summary: |
       Install pre-commit hook to format code, only need to run it once
@@ -20,25 +16,25 @@ tasks:
       Local development with jupyter-notebook, fast feedback MVP
     cmds:
       #jupyter with latest spark
-      - docker-compose up --abort-on-container-exit --no-log-prefix jupyter
+      - docker compose up --abort-on-container-exit --no-log-prefix jupyter
 
   events-split:
     summary: |
       Run the events split job locally with docker-compose
     cmds:
-      - docker-compose up --abort-on-container-exit --build --no-log-prefix events-split
+      - docker compose up --abort-on-container-exit --build --no-log-prefix events-split
 
   conversion-rate-week-after-registration:
     summary: |
       Calculate conversion rate one week after registration locally with docker-compose
     cmds:
-      - docker-compose up --abort-on-container-exit --build --no-log-prefix conversion-rate-week-after-registration
+      - docker compose up --abort-on-container-exit --build --no-log-prefix conversion-rate-week-after-registration
 
   unit-tests:
     summary: |
       Run the unit-tests locally with docker-compose
     cmds:
-      - docker-compose up --abort-on-container-exit --build --no-log-prefix unit_tests
+      - docker compose up --abort-on-container-exit --build --no-log-prefix unit_tests
 
   default:
     cmds:
