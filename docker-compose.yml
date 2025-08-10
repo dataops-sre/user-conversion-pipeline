@@ -10,8 +10,8 @@ services:
         spark.master=local[2]
         spark.driver.memory=2g
     volumes:
-        - ${PWD}/data-input:/data-input/
-        - ${PWD}/data-output:/data-output/
+      - ${PWD}/data-input:/data-input/
+      - ${PWD}/data-output:/data-output/
 
   conversion-rate-week-after-registration:
     build: .
@@ -24,19 +24,19 @@ services:
         spark.master=local[2]
         spark.driver.memory=2g
     volumes:
-        - ${PWD}/data-output:/data-output/
+      - ${PWD}/data-output:/data-output/
 
   unit_tests:
     build:
       context: .
       dockerfile: Dockerfile.test
     volumes:
-        - .:/mnt
-    entrypoint:  ["pytest", "/mnt/jobs/unit_tests/"]
+      - .:/mnt
+    entrypoint: ["pytest", "/mnt/jobs/unit_tests/"]
 
   jupyter:
     #code scatch pad
-    image: jupyter/pyspark-notebook:spark-3.3.1
+    image: quay.io/jupyter/pyspark-notebook:spark-3.5.2
     working_dir: /home/jovyan/work
     volumes:
       - ${PWD}/jupyter-notebook:/home/jovyan/work
