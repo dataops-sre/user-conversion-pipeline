@@ -20,6 +20,7 @@ services:
       APP_NAME: conversion-rate-week-after-registration
       USER_REGISTRATION_DATA_PATH: /data-output/user_registration
       APP_LOADED_DATA_PATH: /data-output/app_loaded
+      OUTPUT_DATA_PATH_PREFIX: /data-output
       SPARK_PROPERTIES: |-
         spark.master=local[2]
         spark.driver.memory=2g
