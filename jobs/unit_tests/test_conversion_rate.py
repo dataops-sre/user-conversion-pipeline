@@ -3,6 +3,7 @@ import pandas as pd
 from jobs.conversion_rate.user_conversion_rate_model import (
     dedup_user_registration_data,
     generate_user_conversion_data,
+    calculate_weekly_summary,
     get_conversion_rate_week_after_registration,
 )
 
@@ -139,6 +140,75 @@ def test_generate_user_conversion_data(spark_session):
         expected_result_df,
         check_like=True,
         check_dtype=False,
+    )
+
+
+def test_calculate_weekly_summary(spark_session):
+    """
+    Tests the calculate_weekly_summary() function.
+
+    This test simulates the output of `generate_user_conversion_data` and uses it
+    as input to verify the weekly aggregation logic.
+    """
+    input_data = [
+        {
+            "initiator_id": 1,
+            "rt": "2020-11-02T14:19:36.000Z",
+            "at": "2020-11-03T14:19:36.000Z",
+            "week_diff": 0,
+        },
+        {
+            "initiator_id": 2,
+            "rt": "2020-11-02T14:19:36.000Z",
+            "at": "2020-11-11T14:19:36.000Z",
+            "week_diff": 1,
+        },
+        {
+            "initiator_id": 3,
+            "rt": "2020-11-03T14:19:36.000Z",
+            "at": None,
+            "week_diff": None,
+        },
+        {
+            "initiator_id": 4,
+            "rt": "2020-12-28T10:00:00.000Z",
+            "at": "2020-12-29T10:00:00.000Z",
+            "week_diff": 0,
+        },
+    ]
+
+    expected_result = [
+        {
+            "registration_week": "2020-45",
+            "total_registered": 3,
+            "total_converted": 1,
+            "conversion_rate": 33,
+        },
+        {
+            "registration_week": "2020-53",
+            "total_registered": 1,
+            "total_converted": 1,
+            "conversion_rate": 100,
+        },
+    ]
+
+    # 3. Create Spark DataFrames
+    input_df = spark_session.createDataFrame(input_data)
+
+    expected_df = spark_session.createDataFrame(expected_result)
+
+    # 4. Run the function being tested
+    result_df = calculate_weekly_summary(input_df)
+
+    # 5. Compare the actual result with the expected result using pandas
+    result_pd = result_df.toPandas()
+    expected_pd = expected_df.toPandas()
+
+    pd.testing.assert_frame_equal(
+        result_pd,
+        expected_pd,
+        check_like=True,  # Ignores column order
+        check_dtype=False,  # Allows for int32 vs int64 differences etc.
     )
 
 

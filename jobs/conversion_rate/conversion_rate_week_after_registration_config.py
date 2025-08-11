@@ -11,6 +11,8 @@ USER_REGISTRATION_DATA_PATH = os.getenv(
     "USER_REGISTRATION_DATA_PATH", "./data-output/user_registration"
 )
 APP_LOADED_DATA_PATH = os.getenv("APP_LOADED_DATA_PATH", "./data-output/app_loaded")
+OUTPUT_DATA_PATH_PREFIX = os.getenv("OUTPUT_DATA_PATH_PREFIX", "./data-output")
+
 
 ## Logging configs
 logging_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
