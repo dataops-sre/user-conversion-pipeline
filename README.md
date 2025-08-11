@@ -11,12 +11,12 @@ This metric helps stakeholders understand user activation and engagement shortly
 ---
 
 ## Tech Stack
-* **PySpark `3.3.1`**: The core ETL library for distributed data processing.
-* **Python `3.10.6`**: The primary programming language.
-* **Docker & Docker Compose `2.12.2`**: For creating consistent, reproducible environments for the application, tests, and development (Jupyter).
+* **PySpark `3.5.2`**: The core ETL library for distributed data processing.
+* **Python `3.x`**: The primary programming language.
+* **Docker & Docker Compose `3.x`**: For creating consistent, reproducible environments for the application, tests, and development (Jupyter).
 * **Taskfile**: A simple, `make`-like build tool for automating common commands (e.g., running the job, tests).
-* **Pytest & `pytest-spark`**: For robust unit testing of our Spark transformations.
-* **Pre-commit**: To automatically enforce code style and quality before commits.
+* **pytest**: For robust unit testing of our Spark transformations.
+* **pre-commit**: To automatically enforce code style and quality before commits.
 
 ---
 
@@ -149,9 +149,9 @@ Events split run:
 ```
 task events-split
 ```
-Split input event from `data-input` folder, write user_registration and app_loaded data as parquet format to `data-output` folder
+This task preprocesses the raw event data from `data-input/`. It splits the events into two distinct datasets (user_registration and app_loaded) and writes them to the `data-output/` directory in Parquet format, partitioned by day.
 
-Output path format: `data-output/user_registration/format=parquet/derived_tstamp_day=2020-01-07`
+Example output path: `data-output/user_registration/format=parquet/derived_tstamp_day=2020-01-07`
 
 Calculate user conversion rate of one week after registration run:
 ```
@@ -164,31 +164,38 @@ it also writes the weekly user conversion rate back to `data-output/` directory 
 Example output path: `data-output/weekly_summary/format=parquet/registration_week=2020-01`
 
 
-## Design and architecture considerations
+## Design and Architecture
 
-This project uses a standard pyspark structure, ETL jobs python files are located in the root
-of `jobs` folder. For each job, I separate data transformation logics into an independent file,
-pyspark unit tests only test data transformation logics. This project structure allows easy vertical
-extension -- add new transformation logics and tests, and horizontal extension -- add new ETL jobs.
+This project follows standard practices for building scalable and maintainable ETL pipelines.
 
-Make usage of the pre-commit hook to ensure coding standard and quality, automatically format python
-code before git commit.
+* Modular Job Structure: The core ETL logic is located in the `jobs/` directory. Each job's data transformation model is isolated in its own file (e.g., user_conversion_rate_model.py), which is then tested independently. It allows easy vertical extension (adding more transformations) and horizontal extension (adding new ETL jobs).
 
-Use docker and dock-compose for local development and testing, it avoids potential gaps between developpers in
-the same project.
+* Automated Code Quality: A pre-commit hook is used to enforce coding standards. It automatically formats Python code before each commit, make code quality consistent the codebase.
 
-Pack the executable in docker container for easier distribution and easier production adoptions.
+* Containerized Environments: Docker and Docker Compose are used for all local development and testing. This provide a consistent environment for all developers, eliminating "it works on my machine" issues and simplifying the path to production deployment.
 
-## My approach and problems encountered.
+## Recommended Development Workflow
 
-I used a jupyter notebook with pyspark support as code scatch pad, it notably helps for data explorations, it enables adhoc verifications and tests.
+To ensure accurate data transformations, I recommend a workflow that begins with interactive data exploration before implementing the final ETL logic.
 
-For the second tasks, I discovered that the user registrations data has duplicates entries.
+Start with a Notebook
 
-The user conversion rate seems low, only 28% of registrations are converted to app_loaded, I made a quick data analysis with jupyter, it does not show any relations between registration channel and conversion rate, I spotted that all directed registrations has no conversion, but due to its very small number -- 2% of registration in the sample, maybe it is just a coincidence.
+A Jupyter Notebook with PySpark provides a "scratchpad" environment perfect for:
 
-the notebook is in `./jupyter-notebook` folder, you can see my explorations in github or by running:
-```
-task jupyter
-```
-it starts the jupyter notebook with docker-compose and mount the notebook folder into docker container
+* Interactive Data Exploration: Quickly run queries to understand the structure, distributions, and quality of the source data.
+
+* Rapid Prototyping: Test transformation logic on data samples and instantly validate the results.
+
+* Investigating Anomalies: Efficiently drill down into unexpected patterns or edge cases.
+
+You can launch the project's pre-configured notebook environment by running: `task jupyter`
+
+Example: Insights from the Sample Dataset
+
+Following this exploratory method on the initial dataset revealed several key findings that were critical for building the final job correctly:
+
+* Discovery of Duplicate Events: The initial analysis showed that the same registered events could appear multiple times for a single user. This discovery led directly to adding a deduplication step in the pipeline to ensure accurate user counts.
+
+* Validating Business Logic: I initially observed a 28% conversion rate. By slicing the data in the notebook, we could investigate potential drivers. For instance, we found no strong correlation with the registration channel.
+
+* Identifying Edge Cases: The analysis highlighted that registrations from the 'direct' channel had a 0% conversion rate. While this was a small sample, identifying such anomalies is crucial for asking further business questions and ensuring the pipeline handles all segments correctly.
