@@ -62,6 +62,53 @@ def generate_user_conversion_data(u_df: DataFrame, a_df: DataFrame) -> DataFrame
     return conversion_time_data
 
 
+def calculate_weekly_summary(conversion_details_df: DataFrame) -> DataFrame:
+    """
+    Aggregates per-user conversion data into a weekly summary report.
+
+    Args:
+        conversion_details_df: A DataFrame from generate_user_conversion_data,
+                               containing initiator_id, rt, at, and week_diff.
+
+    Returns:
+        A DataFrame with the final weekly conversion statistics.
+    """
+    # 1. Add registration_week and is_converted columns
+    summary_data = conversion_details_df.withColumn(
+        "registration_week",
+        F.concat(F.year("rt"), F.lit("-"), F.lpad(F.weekofyear("rt"), 2, "0")),
+    ).withColumn(
+        "is_converted",
+        # A conversion happened if the app load was in the same week (week_diff = 0)
+        F.when(F.col("week_diff") == 0, 1).otherwise(0),
+    )
+
+    # 2. Group by the registration week and aggregate
+    weekly_stats = summary_data.groupBy("registration_week").agg(
+        F.count("initiator_id").alias("total_registered"),
+        F.sum("is_converted").alias("total_converted"),
+    )
+
+    # 3. Calculate conversion rate and format the output
+    final_df = (
+        weekly_stats.withColumn(
+            "conversion_rate",
+            F.round((F.col("total_converted") / F.col("total_registered")) * 100).cast(
+                "integer"
+            ),
+        )
+        .select(
+            "registration_week",
+            "total_registered",
+            "total_converted",
+            "conversion_rate",
+        )
+        .orderBy("registration_week")
+    )
+
+    return final_df
+
+
 def get_conversion_rate_week_after_registration(data: DataFrame) -> float:
     """
     Get User conversion 1 week after the registration rate by dividing number of
